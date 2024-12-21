@@ -1,5 +1,7 @@
 package org.example;
 
+import jdk.dynalink.linker.LinkerServices;
+
 import javax.swing.*;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -14,6 +16,7 @@ public class Main {
 
            switch (opcion){
                case 0:
+                   Service.createAccount();
                    break;
                case 1:
                    break;
