@@ -10,9 +10,9 @@ public class Service {
         String lastName = JOptionPane.showInputDialog(null, "Ingresa tu apellido", "Apellido");
         int cedula = Validation.idIsValid();
         String email = Validation.emailIsValid();
-        String pass = JOptionPane.showInputDialog(null, "Ingresa tu clave", "Clave");
+        String pass = Validation.passIsValid();
 
-        System.out.println("vamos bin");
+        System.out.println("vamos bien");
 
 
         /*name = "daniel";
@@ -21,7 +21,7 @@ public class Service {
         email = "dant@gmail.com";
         pass = "1007653kjhhsd";*/
 
-       //ImplementDao.create(name,lastName,cedula,email,pass);
+       ImplementDao.create(name,lastName,cedula,email,pass);
 
     }
 

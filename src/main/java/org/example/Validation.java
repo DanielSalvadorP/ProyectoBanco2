@@ -3,6 +3,7 @@ package org.example;
 import javax.swing.*;
 
 public class Validation {
+    private static final int VALUE_MIN_PASS = 8;
 
     public static int idIsValid(){
         int idUser = 0;
@@ -32,28 +33,79 @@ public class Validation {
         return idUser;
     }
 
+    /***
+     * Recibe el correo y valida sea valido revisando que haya solo un arroba.
+     * @return
+     */
     public static String emailIsValid(){
-        String emailValid;
+        String emailValid = "";
         int cont=0;
         boolean isValid = false;
         while(!isValid){
-        String email = JOptionPane.showInputDialog(null, "Ingresa tu email", "Email");
-        for(int i = 0; i<email.length(); i++){
-            if(email.charAt(i)=='@'){
-                cont+=1;
-            }
-        }if(cont ==1){
-                return email;
+            emailValid = JOptionPane.showInputDialog(null, "Ingresa tu email", "Email");
+            for(int i = 0; i<emailValid.length(); i++){
+                System.out.println(i);
+                if(emailValid.charAt(i) == '@'){
+                    System.out.println(emailValid.charAt(i));
+                    cont+=1;
+                }
+            }if(cont ==1){
+                    isValid=true;
             }else{
-                JOptionPane.showMessageDialog(null, "papi, un correo te pido", "Error", JOptionPane.WARNING_MESSAGE);
+                System.out.println(cont);
+                   JOptionPane.showMessageDialog(null, "papi, un correo te pido", "Error", JOptionPane.WARNING_MESSAGE);
             }
         }
-        return "";
+        return emailValid;
     }
 
     public static String passIsValid(){
-        String pass = JOptionPane.showInputDialog(null, "Ingresa tu clave", "Clave");
-
-        return "";
+        String pass = "";
+        boolean isValid = false;
+        while(!isValid) {
+            pass = JOptionPane.showInputDialog(null, "Ingresa tu clave", "Clave");
+            if (pass.length() >= VALUE_MIN_PASS) {
+                if(isPasswordValid(pass) == true) {
+                    isValid=true;
+                    System.out.println("Clave valida");
+                } else {
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Tu contraseña debe incluir: \n- Al menos una mayúscula\n- Al menos una minúscula\n- Al menos un número\n- Al menos un carácter especial\n- No debe contener espacios",
+                            "Error",
+                            JOptionPane.WARNING_MESSAGE
+                    );
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "papi, que tenga más de 8 digitos", "Error", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+        return pass;
     }
+
+    public static boolean isPasswordValid(String password){
+        boolean contSpace=false;
+        boolean contUpper=false;
+        boolean contLower = false;
+        boolean contNum = false;
+        boolean contSim = false;
+
+        for (char C : password.toCharArray()) {
+            if (Character.isUpperCase(C)) {
+                contUpper = true;
+            }
+            if (Character.isLowerCase(C)) {
+                contLower = true;
+            }
+            if (Character.isDigit(C)) {
+                contNum = true;
+            }
+            if (!Character.isLetterOrDigit(C) && !Character.isWhitespace(C)) {
+                contSim = true;
+            }
+            if (Character.isWhitespace(C)) {
+                contSpace = true;
+            }
+        }
+        return contUpper && contNum && contLower && contSim && !contSpace;    }
 }
