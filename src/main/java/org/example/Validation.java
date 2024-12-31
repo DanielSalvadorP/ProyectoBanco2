@@ -13,7 +13,7 @@ public class Validation {
             * Cada vez que no lo haga, mostrará un fallo y lo intentará de nuevo
             */
             try{
-                String input = JOptionPane.showInputDialog(null, "Ingresa tu cedula", "Cedulan ", JOptionPane.QUESTION_MESSAGE);
+                String input = JOptionPane.showInputDialog(null, "Ingresa tu cedula", "Cedula", JOptionPane.QUESTION_MESSAGE);
                 if (input == null){
                     JOptionPane.showMessageDialog(null, "Vacio rey ¿qué pasó?", "Error",JOptionPane.WARNING_MESSAGE);
                 }
@@ -42,7 +42,7 @@ public class Validation {
         int cont=0;
         boolean isValid = false;
         while(!isValid){
-            emailValid = JOptionPane.showInputDialog(null, "Ingresa tu email", "Email");
+            emailValid = JOptionPane.showInputDialog(null, "Ingresa tu email", "Email",  JOptionPane.INFORMATION_MESSAGE);
             for(int i = 0; i<emailValid.length(); i++){
                 System.out.println(i);
                 if(emailValid.charAt(i) == '@'){
@@ -63,7 +63,7 @@ public class Validation {
         String pass = "";
         boolean isValid = false;
         while(!isValid) {
-            pass = JOptionPane.showInputDialog(null, "Ingresa tu clave", "Clave");
+            pass = JOptionPane.showInputDialog(null, "Ingresa tu clave", "Clave", JOptionPane.INFORMATION_MESSAGE);
             if (pass.length() >= VALUE_MIN_PASS) {
                 if(isPasswordValid(pass) == true) {
                     isValid=true;

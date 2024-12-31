@@ -20,7 +20,8 @@ public class Main {
                    Service.createAccount();
                    break;
                case 1:
-                   Service.accesAccount();
+                   ImplementDao.AccessUser();
+                   //Service.accesAccount();
                    break;
                case 2:
                    Service.updateAccount();
