@@ -15,7 +15,7 @@ public class Service {
     }
 
     public static void accesAccount(){
-
+        ImplementDao.AccessUser();
     }
 
     public static void updateAccount(){

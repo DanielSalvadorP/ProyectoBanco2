@@ -48,8 +48,6 @@ public class ImplementDao {
     }
 
     public static void AccessUser() {
-        String getEmail = "";
-        String getPass="";
         int tryCount = 0;
         boolean isPassValid = false;
 
@@ -58,54 +56,90 @@ public class ImplementDao {
                 tryCount += 1;
 
                 //Solicitar credenciales
-                String email = JOptionPane.showInputDialog(null, "Ingresa tu correo", "Correo", JOptionPane.QUESTION_MESSAGE);
-                String pass = JOptionPane.showInputDialog(null, "Ingresa tu clave", "Clave", JOptionPane.QUESTION_MESSAGE);
+                String email = JOptionPane.showInputDialog(null, "Ingresa tu correo", "Correo", JOptionPane.YES_NO_OPTION);
 
                 //Consulta segura con PreparedStatement
-                String accessemail = "Select correo from estado where correo = '" + email + "';";
-                try(Statement ps = conection.createStatement()){
-                    try(ResultSet rs = ps.executeQuery(accessemail)){
-                        while (rs.next()) {
-                            getEmail = rs.getString("correo");
-                            System.out.println(getEmail);
-                        }
-                        rs.close();
-                        if (getEmail.equalsIgnoreCase(email)) {
-                            String accessPass = "Select clave from estado where clave = '"+pass+"';";
-                            Statement psPass = conection.createStatement();
-                            ResultSet rsPass = psPass.executeQuery(accessPass);
-                            while(rsPass.next()){
-                                getPass = rsPass.getString("clave");
-                            }
-                            //se deben corregir los intentos de autenticación y se debe asignar el bloqueo despues de 3 intentos
-                            if(getPass.equals(pass) && tryCount <=3){
+                String accessemail = "Select correo, clave from estado where correo = ?;";
+                try (PreparedStatement ps = conection.prepareStatement(accessemail)) {
+                    ps.setString(1, email);
+
+                    try (ResultSet rs = ps.executeQuery()) {
+                        if (rs.next()) {
+                            String getEmail = rs.getString("correo");
+                            String getPass = rs.getString("clave");
+
+                            String inputPass = JOptionPane.showInputDialog(null, "Ingresa tu clave", "Clave", JOptionPane.INFORMATION_MESSAGE);
+
+                            if (getPass.equals(inputPass)) {
                                 isPassValid = true;
                                 JOptionPane.showMessageDialog(null, "Acceso concedido", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                            }else if (!getPass.equals(pass) && tryCount>=3) {
-                                JOptionPane.showMessageDialog(null, "Contraseña incorrecta", "Error", JOptionPane.WARNING_MESSAGE);
-                                isPassValid = true;
-                            }else {
+                            } else {
                                 JOptionPane.showMessageDialog(null, "Contraseña incorrecta", "Error", JOptionPane.WARNING_MESSAGE);
                             }
-                        }else {
+                        } else {
                             JOptionPane.showMessageDialog(null, "Correo no encontrado", "Error", JOptionPane.WARNING_MESSAGE);
                         }
-                    }catch (SQLException e){
-                        System.out.println(e.getMessage());
                     }
-                }catch (SQLException e){
-                    System.out.println(e.getMessage());
                 }
+
+                if (tryCount >= 3) {
+                    JOptionPane.showMessageDialog(null, "Demasiados intentos fallidos. Acceso bloqueado", "Error", JOptionPane.INFORMATION_MESSAGE);
+                    break;
+                }
+
             } while (!isPassValid);
 
-            if(tryCount >=3){
-                JOptionPane.showMessageDialog(null, "Muchos intentos, chao", "Error", JOptionPane.ERROR_MESSAGE);
-            }else{
-                JOptionPane.showMessageDialog(null, "Ingreso", "ok", JOptionPane.INFORMATION_MESSAGE);
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            JOptionPane.showMessageDialog(null, "Error en la data");
+        }catch (SQLException e) {
+            System.out.println("Error de base de datos: "+e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error en la data", "error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    public static void UpdatePass(){
+        String email = JOptionPane.showInputDialog(null, "Ingresa tu correo", "correo", JOptionPane.INFORMATION_MESSAGE);
+        String passNew = JOptionPane.showInputDialog(null, "Ingresa tu nueva clave", "Clave nueva", JOptionPane.INFORMATION_MESSAGE);
+
+        //Valida que no estén vacios el correo o la clave
+        if(email == null || passNew == null || email.isEmpty() || passNew.isEmpty()){
+            JOptionPane.showMessageDialog(null, "El correo y la clave no pueden estar vacios", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        //Conección a la BD
+        try(Connection connection = bdConecction.getConnection()){
+            //Validar que existe el email
+            String selectEmail = "SELECT correo from estado where correo = ?;";
+            try(PreparedStatement ps = connection.prepareStatement(selectEmail)) {
+                ps.setString(1, email);
+
+                try(ResultSet rs = ps.executeQuery()){
+                    if(rs.next()){
+                        //Actualizar la contraseña
+                        String sentence = "UPDATE estado set clave = ? where correo = ?;";
+                        try(PreparedStatement psUpdate = connection.prepareStatement(sentence)){
+                            psUpdate.setString(1, passNew);
+                            psUpdate.setString(2, email);
+
+                            int rowsAffected = psUpdate.executeUpdate();
+                            if(rowsAffected >0) {
+                                JOptionPane.showMessageDialog(null, "Cambio realizado", "Exito", JOptionPane.INFORMATION_MESSAGE);
+                            } else{
+                              JOptionPane.showMessageDialog(null, "No se pudo acctualizar", "Error", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                    }else{
+                        JOptionPane.showMessageDialog(null, "El correo no existe", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+        }catch (SQLException e){
+            System.out.println("Error de base de datos: " + e);
+        }
+    }
+
+    public static void DeleteAccount(){
+        String email = JOptionPane.showInputDialog(null, "Ingrese su correo", "Email", JOptionPane.INFORMATION_MESSAGE);
+        //String clave = JOptionPane.showInputDialog(
+
     }
 }
