@@ -48,7 +48,7 @@ public class ImplementDao {
         }
     }
 
-    public static void AccessUser() {
+    public static boolean AccessUser() {
         int tryCount = 0;
         boolean isPassValid = false;
 
@@ -76,7 +76,7 @@ public class ImplementDao {
                             if (getPass.equals(inputPass)) {
                                 isPassValid = true;
                                 JOptionPane.showMessageDialog(null, "Acceso concedido", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                                UserSesion.OpcionUsuario(email, inputPass);
+                                return true;
                             } else {
                                 JOptionPane.showMessageDialog(null, "Contraseña incorrecta", "Error", JOptionPane.WARNING_MESSAGE);
                             }
@@ -98,6 +98,7 @@ public class ImplementDao {
             System.out.println("Error de base de datos: "+e.getMessage());
             JOptionPane.showMessageDialog(null, "Error en la data", "error", JOptionPane.ERROR_MESSAGE);
         }
+        return isPassValid;
     }
 
     public static void UpdatePass(){
