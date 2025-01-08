@@ -9,7 +9,7 @@ import java.sql.SQLException;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) throws SQLException {
-        String[] opciones = {"Crear cuenta","Acceder","Actualizar contraseña","Eliminar cuenta", "Finalizar"};
+        String[] opciones = {"Crear cuenta","Acceder","Finalizar"};
         int opcion = -1;
         do{
            opcion = JOptionPane.showOptionDialog(null,"¿Qué quieres hacer hoy?",
@@ -23,11 +23,7 @@ public class Main {
                    Service.accesAccount();
                    break;
                case 2:
-                   ImplementDao.UpdatePass();
-                   //Service.updateAccount();
-                   break;
-               case 3:
-                   Service.deleteAccount();
+                   opcion=4;
                    break;
                default:
                    break;

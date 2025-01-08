@@ -4,6 +4,7 @@ import javax.management.Query;
 import javax.swing.*;
 import java.sql.*;
 import java.util.Locale;
+import java.util.concurrent.ForkJoinPool;
 
 public class ImplementDao {
 
@@ -52,11 +53,13 @@ public class ImplementDao {
         boolean isPassValid = false;
 
         try (Connection conection = bdConecction.getConnection()) {
+            String email;
+            String inputPass = null;
             do {
                 tryCount += 1;
 
                 //Solicitar credenciales
-                String email = JOptionPane.showInputDialog(null, "Ingresa tu correo", "Correo", JOptionPane.YES_NO_OPTION);
+                email = JOptionPane.showInputDialog(null, "Ingresa tu correo", "Correo", JOptionPane.YES_NO_OPTION);
 
                 //Consulta segura con PreparedStatement
                 String accessemail = "Select correo, clave from estado where correo = ?;";
@@ -68,11 +71,12 @@ public class ImplementDao {
                             String getEmail = rs.getString("correo");
                             String getPass = rs.getString("clave");
 
-                            String inputPass = JOptionPane.showInputDialog(null, "Ingresa tu clave", "Clave", JOptionPane.INFORMATION_MESSAGE);
+                            inputPass = JOptionPane.showInputDialog(null, "Ingresa tu clave", "Clave", JOptionPane.INFORMATION_MESSAGE);
 
                             if (getPass.equals(inputPass)) {
                                 isPassValid = true;
                                 JOptionPane.showMessageDialog(null, "Acceso concedido", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                                UserSesion.OpcionUsuario(email, inputPass);
                             } else {
                                 JOptionPane.showMessageDialog(null, "Contraseña incorrecta", "Error", JOptionPane.WARNING_MESSAGE);
                             }
@@ -88,6 +92,7 @@ public class ImplementDao {
                 }
 
             } while (!isPassValid);
+
 
         }catch (SQLException e) {
             System.out.println("Error de base de datos: "+e.getMessage());
@@ -135,11 +140,5 @@ public class ImplementDao {
         }catch (SQLException e){
             System.out.println("Error de base de datos: " + e);
         }
-    }
-
-    public static void DeleteAccount(){
-        String email = JOptionPane.showInputDialog(null, "Ingrese su correo", "Email", JOptionPane.INFORMATION_MESSAGE);
-        //String clave = JOptionPane.showInputDialog(
-
     }
 }
