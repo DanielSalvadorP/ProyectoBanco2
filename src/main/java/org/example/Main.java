@@ -15,6 +15,10 @@ public class Main {
            opcion = JOptionPane.showOptionDialog(null,"¿Qué quieres hacer hoy?",
            "Bienvenido",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones,opciones[0]);
 
+           if(opcion==-1){
+               break;
+           }
+
            switch (opcion){
                case 0:
                    Service.createAccount();

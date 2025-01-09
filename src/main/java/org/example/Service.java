@@ -15,11 +15,7 @@ public class Service {
     }
 
     public static void accesAccount(){
-        boolean sessionActive = ImplementDao.AccessUser();
-        if(sessionActive){
-            UserSesionActive(sessionActive);
-        }
-
+        ImplementDao.AccessUser();
     }
 
     public static void updateAccount(){
@@ -30,35 +26,5 @@ public class Service {
 
     }
 
-    public static void UserSesionActive(boolean sessionActive){
-        //System.out.println(email + " " + pass);
-        //Cambiar clave", "Desactivar cuenta","Cerrar sesión"
-        String[] opciones = {"Retirar Dinero", "Ingresar Dinero", "Opción de Usuario", "Cerrar Sesión"};
-        int opcion = -1;
 
-        do{
-            opcion = JOptionPane.showOptionDialog(null,
-                    "¿Qué quieres hoy?",
-                    "Opciones",
-                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
-                    null,
-                    opciones,
-                    opciones[0]);
-
-            switch (opcion){
-                case 0:
-
-                    break;
-                case 1:
-
-                    break;
-                case 2:
-                    ImplementDao.UpdatePass();
-                    break;
-                default:
-                    System.out.println("Hasta luego");
-                    break;
-            }
-        }while(opcion != 3);
-    }
 }

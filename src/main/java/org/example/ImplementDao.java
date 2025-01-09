@@ -48,7 +48,7 @@ public class ImplementDao {
         }
     }
 
-    public static boolean AccessUser() {
+    public static void AccessUser() {
         int tryCount = 0;
         boolean isPassValid = false;
 
@@ -59,10 +59,12 @@ public class ImplementDao {
                 tryCount += 1;
 
                 //Solicitar credenciales
-                email = JOptionPane.showInputDialog(null, "Ingresa tu correo", "Correo", JOptionPane.YES_NO_OPTION);
-
+                email = JOptionPane.showInputDialog(null, "Ingresa tu correo", "Correo", JOptionPane.INFORMATION_MESSAGE);
+                if(email == null){
+                    break;
+                }
                 //Consulta segura con PreparedStatement
-                String accessemail = "Select correo, clave from estado where correo = ?;";
+                String accessemail = "SELECT correo, clave FROM estado WHERE correo = ?;";
                 try (PreparedStatement ps = conection.prepareStatement(accessemail)) {
                     ps.setString(1, email);
 
@@ -72,12 +74,15 @@ public class ImplementDao {
                             String getPass = rs.getString("clave");
 
                             inputPass = JOptionPane.showInputDialog(null, "Ingresa tu clave", "Clave", JOptionPane.INFORMATION_MESSAGE);
+                            if(inputPass == null){
+                                break;
+                            }
 
                             if (getPass.equals(inputPass)) {
                                 isPassValid = true;
                                 JOptionPane.showMessageDialog(null, "Acceso concedido", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                                return true;
-                            } else {
+                                UserSesion.OpcionCliente(isPassValid, email);
+                                 } else {
                                 JOptionPane.showMessageDialog(null, "Contraseña incorrecta", "Error", JOptionPane.WARNING_MESSAGE);
                             }
                         } else {
@@ -91,14 +96,13 @@ public class ImplementDao {
                     break;
                 }
 
-            } while (!isPassValid);
+            } while (!isPassValid );
 
 
         }catch (SQLException e) {
             System.out.println("Error de base de datos: "+e.getMessage());
             JOptionPane.showMessageDialog(null, "Error en la data", "error", JOptionPane.ERROR_MESSAGE);
         }
-        return isPassValid;
     }
 
     public static void UpdatePass(){
@@ -114,14 +118,14 @@ public class ImplementDao {
         //Conección a la BD
         try(Connection connection = bdConecction.getConnection()){
             //Validar que existe el email
-            String selectEmail = "SELECT correo from estado where correo = ?;";
+            String selectEmail = "SELECT correo FROM estado WHERE correo = ?;";
             try(PreparedStatement ps = connection.prepareStatement(selectEmail)) {
                 ps.setString(1, email);
 
                 try(ResultSet rs = ps.executeQuery()){
                     if(rs.next()){
                         //Actualizar la contraseña
-                        String sentence = "UPDATE estado set clave = ? where correo = ?;";
+                        String sentence = "UPDATE estado SET clave = ? WHERE correo = ?;";
                         try(PreparedStatement psUpdate = connection.prepareStatement(sentence)){
                             psUpdate.setString(1, passNew);
                             psUpdate.setString(2, email);
