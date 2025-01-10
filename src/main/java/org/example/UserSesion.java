@@ -30,7 +30,7 @@ public class UserSesion {
                     break;
                 case 2:
                     boolean isSesionAcive = UserSesionActive(isSesionActive, email);
-                    if(isSesionAcive == false){
+                    if (isSesionAcive == false) {
                         System.out.println("fin de sesión");
                         opcion = 4;
                     }
@@ -65,15 +65,23 @@ public class UserSesion {
                     ImplementDao.UpdatePass();
                     break;
                 case 1:
-
+                    if (Confirm()){
+                        isSesionActive = ImplementDao.enableAccount(email,isSesionActive);
+                        opcion = 3;
+                    } else {
+                        System.out.println("Desactivación cancelada por el usuario");
+                    }
                     break;
                 case 2:
-                    JOptionPane.showMessageDialog(null,"¡Hasta luego!", "Cerrando sesión", JOptionPane.INFORMATION_MESSAGE);
-                    isSesionActive = false;
-                    opcion = 3;
+                    if(Confirm()) {
+                        isSesionActive = endSesion(isSesionActive);
+                        opcion = 3;
+                    } else {
+                        System.out.println("Cierre de sesión cancelado por el usuario");
+                    }
                     break;
                 default:
-                    System.out.println("regresando");
+                    System.out.println("Opción no valida, se debe cerrar sesión");
                     break;
             }
         }while(opcion != 3);
@@ -81,6 +89,23 @@ public class UserSesion {
         return isSesionActive;
     }
 
+    public static boolean Confirm(){
+        int confirm = JOptionPane.showConfirmDialog(null,
+                "¿Seguro?",
+                "Confirmación",
+                JOptionPane.YES_NO_OPTION);
+        return confirm == JOptionPane.YES_OPTION;
+    }
 
+    public static boolean endSesion(boolean isSesionActive){
+        System.out.println("Cerrando sesion");
+        JOptionPane.showMessageDialog(null, "¡Hasta luego!", "Cerrando sesión", JOptionPane.INFORMATION_MESSAGE);
+        return isSesionActive = false;
+    }
+
+
+    /*
+    falta mejorar el cierre de sesion
+     */
 }
 

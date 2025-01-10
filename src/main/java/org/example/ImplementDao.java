@@ -7,6 +7,8 @@ import java.util.Locale;
 import java.util.concurrent.ForkJoinPool;
 
 public class ImplementDao {
+    private  static final String ESTATE_DESACTIVATE = "Desactivado";
+    private  static final String ESTATE_ACTIVATE = "Activo";
 
     /***
      * Metodo de creación de usuario y asignación de estado
@@ -43,7 +45,9 @@ public class ImplementDao {
             System.out.println("usuario creado");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            JOptionPane.showMessageDialog(null, "Datos de usuario ya existente\nIntenta de nuevo", "Error", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null,
+                    "Datos de usuario ya existente\nIntenta de nuevo",
+                    "Error", JOptionPane.WARNING_MESSAGE);
             System.out.println("Falló");
         }
     }
@@ -59,40 +63,65 @@ public class ImplementDao {
                 tryCount += 1;
 
                 //Solicitar credenciales
-                email = JOptionPane.showInputDialog(null, "Ingresa tu correo", "Correo", JOptionPane.INFORMATION_MESSAGE);
+                email = JOptionPane.showInputDialog(null,
+                        "Ingresa tu correo",
+                        "Correo",
+                        JOptionPane.INFORMATION_MESSAGE);
                 if(email == null){
                     break;
                 }
                 //Consulta segura con PreparedStatement
-                String accessemail = "SELECT correo, clave FROM estado WHERE correo = ?;";
+                String accessemail = "SELECT correo, estado_user, clave FROM estado WHERE correo = ?;";
                 try (PreparedStatement ps = conection.prepareStatement(accessemail)) {
                     ps.setString(1, email);
 
                     try (ResultSet rs = ps.executeQuery()) {
                         if (rs.next()) {
+
                             String getEmail = rs.getString("correo");
                             String getPass = rs.getString("clave");
+                            String getestado = rs.getString("estado_user");
+                            if(getestado.equals(ESTATE_ACTIVATE)){
+                                inputPass = JOptionPane.showInputDialog(null,
+                                        "Ingresa tu clave",
+                                        "Clave",
+                                        JOptionPane.INFORMATION_MESSAGE);
+                                if(inputPass == null){
+                                    break;
+                                }
 
-                            inputPass = JOptionPane.showInputDialog(null, "Ingresa tu clave", "Clave", JOptionPane.INFORMATION_MESSAGE);
-                            if(inputPass == null){
-                                break;
-                            }
-
-                            if (getPass.equals(inputPass)) {
-                                isPassValid = true;
-                                JOptionPane.showMessageDialog(null, "Acceso concedido", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                                UserSesion.OpcionCliente(isPassValid, email);
-                                 } else {
-                                JOptionPane.showMessageDialog(null, "Contraseña incorrecta", "Error", JOptionPane.WARNING_MESSAGE);
+                                if (getPass.equals(inputPass)) {
+                                    isPassValid = true;
+                                    JOptionPane.showMessageDialog(null,
+                                            "Acceso concedido",
+                                            "Éxito",
+                                            JOptionPane.INFORMATION_MESSAGE);
+                                    UserSesion.OpcionCliente(isPassValid, email);
+                                     } else {
+                                    JOptionPane.showMessageDialog(null,
+                                            "Contraseña incorrecta",
+                                            "Error",
+                                            JOptionPane.WARNING_MESSAGE);
+                                }
+                            }else{
+                                System.out.println("Usuario inactivo, no permite acceso");
+                                JOptionPane.showMessageDialog(null, "Usuario inactivo");
+                                //break;
                             }
                         } else {
-                            JOptionPane.showMessageDialog(null, "Correo no encontrado", "Error", JOptionPane.WARNING_MESSAGE);
+                            JOptionPane.showMessageDialog(null,
+                                    "Correo no encontrado",
+                                    "Error",
+                                    JOptionPane.WARNING_MESSAGE);
                         }
                     }
                 }
 
                 if (tryCount >= 3) {
-                    JOptionPane.showMessageDialog(null, "Demasiados intentos fallidos. Acceso bloqueado", "Error", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null,
+                            "Demasiados intentos fallidos. Acceso bloqueado",
+                            "Error",
+                            JOptionPane.INFORMATION_MESSAGE);
                     break;
                 }
 
@@ -101,17 +130,29 @@ public class ImplementDao {
 
         }catch (SQLException e) {
             System.out.println("Error de base de datos: "+e.getMessage());
-            JOptionPane.showMessageDialog(null, "Error en la data", "error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,
+                    "Error en la data",
+                    "error",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 
     public static void UpdatePass(){
-        String email = JOptionPane.showInputDialog(null, "Ingresa tu correo", "correo", JOptionPane.INFORMATION_MESSAGE);
-        String passNew = JOptionPane.showInputDialog(null, "Ingresa tu nueva clave", "Clave nueva", JOptionPane.INFORMATION_MESSAGE);
+        String email = JOptionPane.showInputDialog(null,
+                "Ingresa tu correo",
+                "correo",
+                JOptionPane.INFORMATION_MESSAGE);
+        String passNew = JOptionPane.showInputDialog(null,
+                "Ingresa tu nueva clave",
+                "Clave nueva",
+                JOptionPane.INFORMATION_MESSAGE);
 
         //Valida que no estén vacios el correo o la clave
         if(email == null || passNew == null || email.isEmpty() || passNew.isEmpty()){
-            JOptionPane.showMessageDialog(null, "El correo y la clave no pueden estar vacios", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,
+                    "El correo y la clave no pueden estar vacios",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -132,18 +173,67 @@ public class ImplementDao {
 
                             int rowsAffected = psUpdate.executeUpdate();
                             if(rowsAffected >0) {
-                                JOptionPane.showMessageDialog(null, "Cambio realizado", "Exito", JOptionPane.INFORMATION_MESSAGE);
+                                JOptionPane.showMessageDialog(null,
+                                        "Cambio realizado",
+                                        "Exito",
+                                        JOptionPane.INFORMATION_MESSAGE);
                             } else{
-                              JOptionPane.showMessageDialog(null, "No se pudo acctualizar", "Error", JOptionPane.ERROR_MESSAGE);
+                              JOptionPane.showMessageDialog(null,
+                                      "No se pudo acctualizar",
+                                      "Error",
+                                      JOptionPane.ERROR_MESSAGE);
                             }
                         }
                     }else{
-                        JOptionPane.showMessageDialog(null, "El correo no existe", "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null,
+                                "El correo no existe",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }
         }catch (SQLException e){
             System.out.println("Error de base de datos: " + e);
         }
+    }
+
+    public static boolean enableAccount(String email, boolean isSesionActive){
+        //Sentencia de update de estado
+
+        String updateSentence = "UPDATE estado SET estado_user = ? WHERE correo = ?;";
+
+        //Conección a la BD
+        try(Connection connection = bdConecction.getConnection()){
+            try(PreparedStatement ps = connection.prepareStatement(updateSentence)){
+                ps.setString(1, ESTATE_DESACTIVATE);
+                ps.setString(2, email);
+                ps.executeUpdate();
+                String selectSentence = "SELECT estado_user, correo FROM estado WHERE correo = ?";
+                try(PreparedStatement psSelect = connection.prepareStatement(selectSentence)){
+                    psSelect.setString(1, email);
+
+                    try(ResultSet rs  = psSelect.executeQuery()){
+                        if(rs.next()){
+                            String emailConfirm = rs.getString("correo");
+                            String estadoConfirm = rs.getString("estado_user");
+                            JOptionPane.showMessageDialog(null,
+                                    "el correo "+emailConfirm+" está "+estadoConfirm);
+                            boolean end =  UserSesion.endSesion(isSesionActive);
+                            System.out.println(end);
+                            return end;
+
+                        }
+                    }
+                }
+            }
+        } catch(SQLException e){
+            System.out.println("Error de BD:" + e);
+            JOptionPane.showMessageDialog(null,
+                    "Error en la conección a BD",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+        System.out.println(isSesionActive);
+        return isSesionActive;
     }
 }

@@ -15,7 +15,8 @@ public class Main {
            opcion = JOptionPane.showOptionDialog(null,"¿Qué quieres hacer hoy?",
            "Bienvenido",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones,opciones[0]);
 
-           if(opcion==-1){
+           if(opcion==-1 || opcion == 2){
+               System.out.println("Proceso finalizado por el usuario");
                break;
            }
 
@@ -26,9 +27,9 @@ public class Main {
                case 1:
                    Service.accesAccount();
                    break;
-               case 2:
+               /*case 2:
                    opcion=4;
-                   break;
+                   break;*/
                default:
                    break;
            }
