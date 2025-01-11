@@ -7,8 +7,8 @@
     <list default="true" id="4d926d00-849a-4f22-8333-806b9bc0bd73" name="Changes" comment="Opcion de servicio a usuario">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/ImplementDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/ImplementDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/UserSesion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/UserSesion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Validation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Validation.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -182,7 +182,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736398804108</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Opcion de servicio a usuario">
+      <option name="closed" value="true" />
+      <created>1736488735139</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1736488735139</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -193,16 +201,5 @@
     <MESSAGE value="Acceso a un 80%" />
     <MESSAGE value="Opcion de servicio a usuario" />
     <option name="LAST_COMMIT_MESSAGE" value="Opcion de servicio a usuario" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/org/example/ImplementDao.java</url>
-          <line>108</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

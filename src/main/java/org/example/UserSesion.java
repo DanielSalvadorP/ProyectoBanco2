@@ -62,11 +62,11 @@ public class UserSesion {
 
             switch (opcion){
                 case 0:
-                    ImplementDao.UpdatePass();
+                    ImplementDao.UpdatePass(email);
                     break;
                 case 1:
                     if (Confirm()){
-                        isSesionActive = ImplementDao.enableAccount(email,isSesionActive);
+                        isSesionActive = ImplementDao.updateStateAccount(email,isSesionActive);
                         opcion = 3;
                     } else {
                         System.out.println("Desactivación cancelada por el usuario");
@@ -103,9 +103,8 @@ public class UserSesion {
         return isSesionActive = false;
     }
 
-
     /*
-    falta mejorar el cierre de sesion
-     */
+    Se debe mejorar el metodo de registro
+    * */
 }
 

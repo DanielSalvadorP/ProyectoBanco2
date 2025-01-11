@@ -55,7 +55,7 @@ public class ImplementDao {
     public static void AccessUser() {
         int tryCount = 0;
         boolean isPassValid = false;
-
+        boolean isSesionActive = false;
         try (Connection conection = bdConecction.getConnection()) {
             String email;
             String inputPass = null;
@@ -96,7 +96,7 @@ public class ImplementDao {
                                             "Acceso concedido",
                                             "Éxito",
                                             JOptionPane.INFORMATION_MESSAGE);
-                                    UserSesion.OpcionCliente(isPassValid, email);
+                                    UserSesion.OpcionCliente(isSesionActive, email);
                                      } else {
                                     JOptionPane.showMessageDialog(null,
                                             "Contraseña incorrecta",
@@ -105,8 +105,13 @@ public class ImplementDao {
                                 }
                             }else{
                                 System.out.println("Usuario inactivo, no permite acceso");
-                                JOptionPane.showMessageDialog(null, "Usuario inactivo");
-                                //break;
+                                int opcion = JOptionPane.showConfirmDialog(null, "Usuario inactivo ¿Lo quiere activar?", "Inactivo",JOptionPane.YES_NO_OPTION);
+                                if(opcion == 0){
+                                    updateStateAccount(email, isSesionActive);
+                                }else{
+                                    System.out.println("No actualizar");
+                                    JOptionPane.showMessageDialog(null, "Ok");
+                                }
                             }
                         } else {
                             JOptionPane.showMessageDialog(null,
@@ -137,54 +142,38 @@ public class ImplementDao {
         }
     }
 
-    public static void UpdatePass(){
-        String email = JOptionPane.showInputDialog(null,
-                "Ingresa tu correo",
-                "correo",
-                JOptionPane.INFORMATION_MESSAGE);
-        String passNew = JOptionPane.showInputDialog(null,
-                "Ingresa tu nueva clave",
-                "Clave nueva",
-                JOptionPane.INFORMATION_MESSAGE);
+    public static void UpdatePass(String email){
+        String passNew = Validation.passIsValid();
 
-        //Valida que no estén vacios el correo o la clave
-        if(email == null || passNew == null || email.isEmpty() || passNew.isEmpty()){
-            JOptionPane.showMessageDialog(null,
-                    "El correo y la clave no pueden estar vacios",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        //Conección a la BD
-        try(Connection connection = bdConecction.getConnection()){
+            //Conección a la BD
+        try (Connection connection = bdConecction.getConnection()) {
             //Validar que existe el email
             String selectEmail = "SELECT correo FROM estado WHERE correo = ?;";
-            try(PreparedStatement ps = connection.prepareStatement(selectEmail)) {
+            try (PreparedStatement ps = connection.prepareStatement(selectEmail)) {
                 ps.setString(1, email);
 
-                try(ResultSet rs = ps.executeQuery()){
-                    if(rs.next()){
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
                         //Actualizar la contraseña
                         String sentence = "UPDATE estado SET clave = ? WHERE correo = ?;";
-                        try(PreparedStatement psUpdate = connection.prepareStatement(sentence)){
+                        try (PreparedStatement psUpdate = connection.prepareStatement(sentence)) {
                             psUpdate.setString(1, passNew);
                             psUpdate.setString(2, email);
 
                             int rowsAffected = psUpdate.executeUpdate();
-                            if(rowsAffected >0) {
+                            if (rowsAffected > 0) {
                                 JOptionPane.showMessageDialog(null,
                                         "Cambio realizado",
                                         "Exito",
                                         JOptionPane.INFORMATION_MESSAGE);
-                            } else{
-                              JOptionPane.showMessageDialog(null,
-                                      "No se pudo acctualizar",
-                                      "Error",
-                                      JOptionPane.ERROR_MESSAGE);
+                            } else {
+                                JOptionPane.showMessageDialog(null,
+                                        "No se pudo acctualizar",
+                                        "Error",
+                                        JOptionPane.ERROR_MESSAGE);
                             }
                         }
-                    }else{
+                    } else {
                         JOptionPane.showMessageDialog(null,
                                 "El correo no existe",
                                 "Error",
@@ -192,35 +181,38 @@ public class ImplementDao {
                     }
                 }
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Error de base de datos: " + e);
         }
     }
 
-    public static boolean enableAccount(String email, boolean isSesionActive){
-        //Sentencia de update de estado
-
-        String updateSentence = "UPDATE estado SET estado_user = ? WHERE correo = ?;";
-
+    public static boolean updateStateAccount(String email, boolean isSesionActive){
         //Conección a la BD
+        String newEstate = ESTATE_ACTIVATE;
         try(Connection connection = bdConecction.getConnection()){
-            try(PreparedStatement ps = connection.prepareStatement(updateSentence)){
-                ps.setString(1, ESTATE_DESACTIVATE);
-                ps.setString(2, email);
-                ps.executeUpdate();
-                String selectSentence = "SELECT estado_user, correo FROM estado WHERE correo = ?";
-                try(PreparedStatement psSelect = connection.prepareStatement(selectSentence)){
-                    psSelect.setString(1, email);
+            String selectSentence = "SELECT estado_user, correo FROM estado WHERE correo = ?";
+            try(PreparedStatement psSelect = connection.prepareStatement(selectSentence)){
+                psSelect.setString(1, email);
 
-                    try(ResultSet rs  = psSelect.executeQuery()){
-                        if(rs.next()){
-                            String emailConfirm = rs.getString("correo");
-                            String estadoConfirm = rs.getString("estado_user");
-                            JOptionPane.showMessageDialog(null,
-                                    "el correo "+emailConfirm+" está "+estadoConfirm);
-                            boolean end =  UserSesion.endSesion(isSesionActive);
-                            System.out.println(end);
-                            return end;
+                try(ResultSet rs  = psSelect.executeQuery()){
+                    if(rs.next()){
+                        String emailConfirm = rs.getString("correo");
+                        String estadoConfirm = rs.getString("estado_user");
+                        if(estadoConfirm.equals(newEstate)){
+                            newEstate = ESTATE_DESACTIVATE;
+                        }
+                        JOptionPane.showMessageDialog(null,
+                                "el correo "+emailConfirm+" está "+newEstate);
+
+                        System.out.println(newEstate);
+                        //Sentencia de update de estado
+                        String updateSentence = "UPDATE estado SET estado_user = ? WHERE correo = ?;";
+                        try(PreparedStatement ps = connection.prepareStatement(updateSentence)){
+                            ps.setString(1, newEstate);
+                            ps.setString(2, email);
+                            ps.executeUpdate();
+
+                        return UserSesion.endSesion(isSesionActive);
 
                         }
                     }

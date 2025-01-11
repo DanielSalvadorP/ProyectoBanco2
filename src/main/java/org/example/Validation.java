@@ -61,10 +61,20 @@ public class Validation {
 
     public static String passIsValid(){
         String pass = "";
+        String confirmPass;
         boolean isValid = false;
         while(!isValid) {
-            pass = JOptionPane.showInputDialog(null, "Ingresa tu clave", "Clave", JOptionPane.INFORMATION_MESSAGE);
-            if (pass.length() >= VALUE_MIN_PASS) {
+            pass = JOptionPane.showInputDialog(null,
+                    "Ingresa una clave para tu cuenta",
+                    "Clave",
+                    JOptionPane.INFORMATION_MESSAGE);
+            confirmPass = JOptionPane.showInputDialog(null,
+                    "Confirma la clave para tu cuenta",
+                    "Confirmación de clave",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+
+            if (pass.length() >= VALUE_MIN_PASS && pass.equals(confirmPass)) {
                 if(isPasswordValid(pass) == true) {
                     isValid=true;
                     System.out.println("Clave valida");
