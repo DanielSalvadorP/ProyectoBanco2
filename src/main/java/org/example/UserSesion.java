@@ -103,6 +103,30 @@ public class UserSesion {
         return isSesionActive = false;
     }
 
+    /**
+     * Valida que la entrada no sea nula o vacá y que no tenga espacios demas
+     * @param message
+     * @param title
+     * @return
+     */
+    public static String inputAndValidate(String message, String title){
+        String input = JOptionPane.showInputDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
+
+        do{
+
+            if (input.isEmpty()) {
+                int confirm = JOptionPane.showConfirmDialog(null, "¿Seguro que deseas cancelar?", "Confirmar", JOptionPane.YES_NO_OPTION);
+                if (confirm == JOptionPane.YES_OPTION) {
+                    return null; // Permitir que el método superior maneje la cancelación.
+                }
+            }
+            else if (input.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "El campo no debe estar vacio", "Error", JOptionPane.ERROR);
+            }
+
+        }while(input == null || input.isEmpty());
+        return input.trim(); //para eliminar espacios;
+    }
     /*
     Se debe mejorar el metodo de registro
     * */

@@ -63,13 +63,18 @@ public class ImplementDao {
                 tryCount += 1;
 
                 //Solicitar credenciales
-                email = JOptionPane.showInputDialog(null,
+               /* email = JOptionPane.showInputDialog(null,
                         "Ingresa tu correo",
                         "Correo",
-                        JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.INFORMATION_MESSAGE);*/
+
+                email= UserSesion.inputAndValidate("Ingresa tu correo",
+                        "Correo");
                 if(email == null){
+                    JOptionPane.showMessageDialog(null, "Operación cancelada", "Información", JOptionPane.INFORMATION_MESSAGE);
                     break;
                 }
+
                 //Consulta segura con PreparedStatement
                 String accessemail = "SELECT correo, estado_user, clave FROM estado WHERE correo = ?;";
                 try (PreparedStatement ps = conection.prepareStatement(accessemail)) {
@@ -82,11 +87,14 @@ public class ImplementDao {
                             String getPass = rs.getString("clave");
                             String getestado = rs.getString("estado_user");
                             if(getestado.equals(ESTATE_ACTIVATE)){
-                                inputPass = JOptionPane.showInputDialog(null,
+                                inputPass = UserSesion.inputAndValidate("Ingresa tu clave",
+                                        "Clave");
+                                        /*JOptionPane.showInputDialog(null,
                                         "Ingresa tu clave",
                                         "Clave",
-                                        JOptionPane.INFORMATION_MESSAGE);
+                                        JOptionPane.INFORMATION_MESSAGE);*/
                                 if(inputPass == null){
+                                    JOptionPane.showMessageDialog(null, "Operación cancelada", "Información", JOptionPane.INFORMATION_MESSAGE);
                                     break;
                                 }
 

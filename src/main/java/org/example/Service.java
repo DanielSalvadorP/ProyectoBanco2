@@ -6,12 +6,17 @@ import java.sql.SQLException;
 public class Service {
 
     public static void createAccount() throws SQLException {
-        String name = JOptionPane.showInputDialog(null, "Ingresa tu nombre", "Nombre", JOptionPane.INFORMATION_MESSAGE);
-        String lastName = JOptionPane.showInputDialog(null, "Ingresa tu apellido", "Apellido", JOptionPane.INFORMATION_MESSAGE);
+        String name = UserSesion.inputAndValidate("Ingresa tu nombre", "Nombre");
+        String lastName = UserSesion.inputAndValidate("Ingresa tu apellido", "Apellido");
         int cedula = Validation.idIsValid();
         String email = Validation.emailIsValid();
         String pass = Validation.passIsValid();
        ImplementDao.create(name,lastName,cedula,email,pass);
+       /*
+       1. Validar que no sea null la entrada de nombre y aprellido con un metodo recursivo
+       2. Validarque el correo no haya exista
+       3. manejo de excepciones
+        */
     }
 
     public static void accesAccount(){
@@ -25,6 +30,7 @@ public class Service {
     public static void deleteAccount(){
 
     }
+
 
 
 }
