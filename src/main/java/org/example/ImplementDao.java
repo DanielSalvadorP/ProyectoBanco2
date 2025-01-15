@@ -25,28 +25,42 @@ public class ImplementDao {
     public static void create(String name, String lastName, int cedula, String email, String pass) throws SQLException {
         String createUser = "INSERT INTO user (name_user, lastname_user, cedula, correo) VALUES (?,?,?,?);";
         String estadoUser = "INSERT INTO estado (estado_user, correo, clave) VALUES (?,?,?)";
+        String selectUser = "SELECT correo FROM estado WHERE correo = ?";
 
         try (Connection conection = bdConecction.getConnection()) {
             conection.setAutoCommit(false);
 
-            try (PreparedStatement psUser = conection.prepareStatement(createUser);
-                 PreparedStatement psEstado = conection.prepareStatement(estadoUser)) {
+            try(PreparedStatement psSelectUser = conection.prepareStatement(selectUser)){
+                psSelectUser.setString(1, email);
 
-                psUser.setString(1, name.toLowerCase(Locale.ROOT));
-                psUser.setString(2, lastName);
-                psUser.setInt(3, cedula);
-                psUser.setString(4, email);
-                psUser.executeUpdate();
+                try(ResultSet rsSelectUser = psSelectUser.executeQuery()){
+                    if(rsSelectUser.next()){
+                        String getEmail = rsSelectUser.getString("Correo");
+                        System.out.println(getEmail);
+                        JOptionPane.showMessageDialog(null, "El usuario "+getEmail+" Ya existe", "Error", JOptionPane.ERROR_MESSAGE);
+                    } else{
+                        try (PreparedStatement psUser = conection.prepareStatement(createUser);
+                             PreparedStatement psEstado = conection.prepareStatement(estadoUser)) {
 
-                psEstado.setString(1, "Activo");
-                psEstado.setString(2, email);
-                psEstado.setString(3, pass);
-                psEstado.executeUpdate();
+                            psUser.setString(1, name.toLowerCase(Locale.ROOT));
+                            psUser.setString(2, lastName);
+                            psUser.setInt(3, cedula);
+                            psUser.setString(4, email);
+                            psUser.executeUpdate();
 
-                conection.commit();
+                            psEstado.setString(1, "Activo");
+                            psEstado.setString(2, email);
+                            psEstado.setString(3, pass);
+                            psEstado.executeUpdate();
+
+                            conection.commit();
+                        }
+                        System.out.println("usuario creado");
+                    }
+                }
             }
-            System.out.println("usuario creado");
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             System.out.println(e.getMessage());
             JOptionPane.showMessageDialog(null,
                     "Datos de usuario ya existente\nIntenta de nuevo",
@@ -69,11 +83,6 @@ public class ImplementDao {
                 tryCount += 1;
 
                 //Solicitar credenciales
-               /* email = JOptionPane.showInputDialog(null,
-                        "Ingresa tu correo",
-                        "Correo",
-                        JOptionPane.INFORMATION_MESSAGE);*/
-
                 email= Validation.inputAndValidate("Ingresa tu correo",
                         "Correo");
                 if(email == null){
@@ -98,10 +107,6 @@ public class ImplementDao {
                             if(getestado.equals(ESTATE_ACTIVATE)){
                                 inputPass = Validation.inputAndValidate("Ingresa tu clave",
                                         "Clave");
-                                        /*JOptionPane.showInputDialog(null,
-                                        "Ingresa tu clave",
-                                        "Clave",
-                                        JOptionPane.INFORMATION_MESSAGE);*/
                                 if(inputPass == null){
                                     JOptionPane.showMessageDialog(null, "Operación cancelada", "Información", JOptionPane.INFORMATION_MESSAGE);
                                     break;

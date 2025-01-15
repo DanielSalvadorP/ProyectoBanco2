@@ -4,13 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4d926d00-849a-4f22-8333-806b9bc0bd73" name="Changes" comment="Metodo de validación mejorado">
+    <list default="true" id="4d926d00-849a-4f22-8333-806b9bc0bd73" name="Changes" comment="Documentación mejorada y cambio en la estructura de validacion">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/ImplementDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/ImplementDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Service.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Service.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/UserSesion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/UserSesion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Validation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Validation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/bdConecction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/bdConecction.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,18 +34,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Main.executor&quot;: &quot;Debug&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/Daniel/IdeaProjects/ProyectoBanco2/src/main/java/org/example/Main.java&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;project.propDebugger&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "onboarding.tips.debug.path": "C:/Users/Daniel/IdeaProjects/ProyectoBanco2/src/main/java/org/example/Main.java",
+    "settings.editor.selected.configurable": "project.propDebugger"
   }
-}</component>
+}]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -232,7 +230,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736829455538</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Documentación mejorada y cambio en la estructura de validacion">
+      <option name="closed" value="true" />
+      <created>1736915207043</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1736915207044</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -243,7 +249,8 @@
     <MESSAGE value="Acceso a un 80%" />
     <MESSAGE value="Opcion de servicio a usuario" />
     <MESSAGE value="Metodo de validación mejorado" />
-    <option name="LAST_COMMIT_MESSAGE" value="Metodo de validación mejorado" />
+    <MESSAGE value="Documentación mejorada y cambio en la estructura de validacion" />
+    <option name="LAST_COMMIT_MESSAGE" value="Documentación mejorada y cambio en la estructura de validacion" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

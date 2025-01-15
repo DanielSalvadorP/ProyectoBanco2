@@ -27,9 +27,6 @@ public class Main {
                case 1:
                    Service.accesAccount();
                    break;
-               /*case 2:
-                   opcion=4;
-                   break;*/
                default:
                    break;
            }

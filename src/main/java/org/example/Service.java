@@ -17,7 +17,7 @@ public class Service {
         String pass = Validation.passIsValid();
        ImplementDao.create(name,lastName,cedula,email,pass);
        /*
-       2. Validarque el correo no exista
+       2. Validarque el correo no exista (ya, ahora necesito que valide la cedula tambien)
        3. manejo de excepciones
         */
     }
