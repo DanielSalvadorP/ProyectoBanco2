@@ -6,6 +6,9 @@ import java.sql.*;
 import java.util.Locale;
 import java.util.concurrent.ForkJoinPool;
 
+/**
+ * Clase que ejecuta los query a la BD
+ */
 public class ImplementDao {
     private  static final String ESTATE_DESACTIVATE = "Desactivado";
     private  static final String ESTATE_ACTIVATE = "Activo";
@@ -52,6 +55,9 @@ public class ImplementDao {
         }
     }
 
+    /**
+     * Inicio de sesión siempre y cuando la cuenta exista
+     */
     public static void AccessUser() {
         int tryCount = 0;
         boolean isPassValid = false;
@@ -68,10 +74,13 @@ public class ImplementDao {
                         "Correo",
                         JOptionPane.INFORMATION_MESSAGE);*/
 
-                email= UserSesion.inputAndValidate("Ingresa tu correo",
+                email= Validation.inputAndValidate("Ingresa tu correo",
                         "Correo");
                 if(email == null){
-                    JOptionPane.showMessageDialog(null, "Operación cancelada", "Información", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null,
+                            "Operación cancelada",
+                            "Información",
+                            JOptionPane.INFORMATION_MESSAGE);
                     break;
                 }
 
@@ -87,7 +96,7 @@ public class ImplementDao {
                             String getPass = rs.getString("clave");
                             String getestado = rs.getString("estado_user");
                             if(getestado.equals(ESTATE_ACTIVATE)){
-                                inputPass = UserSesion.inputAndValidate("Ingresa tu clave",
+                                inputPass = Validation.inputAndValidate("Ingresa tu clave",
                                         "Clave");
                                         /*JOptionPane.showInputDialog(null,
                                         "Ingresa tu clave",
@@ -104,7 +113,7 @@ public class ImplementDao {
                                             "Acceso concedido",
                                             "Éxito",
                                             JOptionPane.INFORMATION_MESSAGE);
-                                    UserSesion.OpcionCliente(isSesionActive, email);
+                                    UserSesion.OpcionClient(isSesionActive, email);
                                      } else {
                                     JOptionPane.showMessageDialog(null,
                                             "Contraseña incorrecta",
@@ -113,7 +122,10 @@ public class ImplementDao {
                                 }
                             }else{
                                 System.out.println("Usuario inactivo, no permite acceso");
-                                int opcion = JOptionPane.showConfirmDialog(null, "Usuario inactivo ¿Lo quiere activar?", "Inactivo",JOptionPane.YES_NO_OPTION);
+                                int opcion = JOptionPane.showConfirmDialog(null,
+                                        "Usuario inactivo ¿Lo quiere activar?",
+                                        "Inactivo",
+                                        JOptionPane.YES_NO_OPTION);
                                 if(opcion == 0){
                                     updateStateAccount(email, isSesionActive);
                                 }else{
@@ -140,7 +152,6 @@ public class ImplementDao {
 
             } while (!isPassValid );
 
-
         }catch (SQLException e) {
             System.out.println("Error de base de datos: "+e.getMessage());
             JOptionPane.showMessageDialog(null,
@@ -150,7 +161,13 @@ public class ImplementDao {
         }
     }
 
+    /**
+     * Actualiza la contraseña cambiandola por una nueva
+     * siempre y cuando cumpla con los estandares de seguridad
+     * @param email
+     */
     public static void UpdatePass(String email){
+        //Se trae la contraseña nueva desde el metodo de validación de clave
         String passNew = Validation.passIsValid();
 
             //Conección a la BD
@@ -194,6 +211,12 @@ public class ImplementDao {
         }
     }
 
+    /**
+     * Activa o Desactiva la cuenta de usuario
+     * @param email
+     * @param isSesionActive
+     * @return
+     */
     public static boolean updateStateAccount(String email, boolean isSesionActive){
         //Conección a la BD
         String newEstate = ESTATE_ACTIVATE;
@@ -206,13 +229,14 @@ public class ImplementDao {
                     if(rs.next()){
                         String emailConfirm = rs.getString("correo");
                         String estadoConfirm = rs.getString("estado_user");
+
                         if(estadoConfirm.equals(newEstate)){
                             newEstate = ESTATE_DESACTIVATE;
                         }
-                        JOptionPane.showMessageDialog(null,
-                                "el correo "+emailConfirm+" está "+newEstate);
 
-                        System.out.println(newEstate);
+                        JOptionPane.showMessageDialog(null,
+                                "El correo "+emailConfirm+" ha sido "+newEstate);
+
                         //Sentencia de update de estado
                         String updateSentence = "UPDATE estado SET estado_user = ? WHERE correo = ?;";
                         try(PreparedStatement ps = connection.prepareStatement(updateSentence)){
@@ -220,8 +244,7 @@ public class ImplementDao {
                             ps.setString(2, email);
                             ps.executeUpdate();
 
-                        return UserSesion.endSesion(isSesionActive);
-
+                        return Validation.endSesion(isSesionActive);
                         }
                     }
                 }

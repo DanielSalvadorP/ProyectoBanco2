@@ -5,6 +5,9 @@ import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * Clase de conección a la BD
+ */
 public class bdConecction {
 
     private static final String url = "jdbc:mysql://localhost:3306/SmtaBanco";

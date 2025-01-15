@@ -4,7 +4,12 @@ import javax.swing.*;
 
 public class UserSesion {
 
-    public static void OpcionCliente(boolean isSesionActive, String email){
+    /**
+     * Opciones del usuario sobre la cuenta bancaria
+     * @param isSesionActive
+     * @param email
+     */
+    public static void OpcionClient(boolean isSesionActive, String email){
         System.out.println(email +" " + isSesionActive);
         String[] opciones = {"Retirar Dinero", "Ingresar Dinero", "Opción de Usuario"};
         int opcion = -1;
@@ -29,7 +34,7 @@ public class UserSesion {
 
                     break;
                 case 2:
-                    boolean isSesionAcive = UserSesionActive(isSesionActive, email);
+                    boolean isSesionAcive = OpcionAccountUser(isSesionActive, email);
                     if (isSesionAcive == false) {
                         System.out.println("fin de sesión");
                         opcion = 4;
@@ -45,9 +50,13 @@ public class UserSesion {
         }while(opcion != 4);
     }
 
-    public static boolean UserSesionActive(boolean isSesionActive, String email){
-        //System.out.println(email + " " + pass);
-
+    /**
+     * Opciones de usuario sobre la cuenta de usuario
+     * @param isSesionActive
+     * @param email
+     * @return
+     */
+    public static boolean OpcionAccountUser(boolean isSesionActive, String email){
         String[] opciones = {"Cambiar clave", "Desactivar cuenta","Cerrar Sesión","Regresar"};
         int opcion = -1;
 
@@ -65,7 +74,7 @@ public class UserSesion {
                     ImplementDao.UpdatePass(email);
                     break;
                 case 1:
-                    if (Confirm()){
+                    if (Validation.Confirm()){
                         isSesionActive = ImplementDao.updateStateAccount(email,isSesionActive);
                         opcion = 3;
                     } else {
@@ -73,8 +82,8 @@ public class UserSesion {
                     }
                     break;
                 case 2:
-                    if(Confirm()) {
-                        isSesionActive = endSesion(isSesionActive);
+                    if(Validation.Confirm()) {
+                        isSesionActive = Validation.endSesion(isSesionActive);
                         opcion = 3;
                     } else {
                         System.out.println("Cierre de sesión cancelado por el usuario");
@@ -88,48 +97,5 @@ public class UserSesion {
 
         return isSesionActive;
     }
-
-    public static boolean Confirm(){
-        int confirm = JOptionPane.showConfirmDialog(null,
-                "¿Seguro?",
-                "Confirmación",
-                JOptionPane.YES_NO_OPTION);
-        return confirm == JOptionPane.YES_OPTION;
-    }
-
-    public static boolean endSesion(boolean isSesionActive){
-        System.out.println("Cerrando sesion");
-        JOptionPane.showMessageDialog(null, "¡Hasta luego!", "Cerrando sesión", JOptionPane.INFORMATION_MESSAGE);
-        return isSesionActive = false;
-    }
-
-    /**
-     * Valida que la entrada no sea nula o vacá y que no tenga espacios demas
-     * @param message
-     * @param title
-     * @return
-     */
-    public static String inputAndValidate(String message, String title){
-        String input;
-
-        do{
-            input = JOptionPane.showInputDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
-            System.out.println("Esto fue lo que se imprimio:"+input+"2");
-
-            if (input == null) {
-                int confirm = JOptionPane.showConfirmDialog(null, "¿Seguro que deseas cancelar?", "Confirmar", JOptionPane.YES_NO_OPTION);
-                if (confirm == JOptionPane.YES_OPTION) {
-                    return null; // Permitir que el método superior maneje la cancelación.
-                }
-            } else if (input.trim().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "El campo no debe estar vacio", "Error", JOptionPane.ERROR_MESSAGE);
-            } else {
-                return input.trim();
-            }
-        }while(true);
-    }
-    /*
-    Se debe mejorar el metodo de registro
-    * */
 }
 
