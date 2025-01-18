@@ -11,7 +11,7 @@ public class UserSesion {
      */
     public static void OpcionClient(boolean isSesionActive, String email){
         System.out.println(email +" " + isSesionActive);
-        String[] opciones = {"Retirar Dinero", "Ingresar Dinero", "Opción de Usuario"};
+        String[] opciones = {"Opción de cuenta", "Opción de Usuario"};
         int opcion = -1;
 
         do{
@@ -28,20 +28,14 @@ public class UserSesion {
 
             switch (opcion){
                 case 0:
-
+                    AccountOpcion(isSesionActive);
                     break;
                 case 1:
-
-                    break;
-                case 2:
                     boolean isSesionAcive = OpcionAccountUser(isSesionActive, email);
                     if (isSesionAcive == false) {
                         System.out.println("fin de sesión");
                         opcion = 4;
                     }
-                    break;
-                case 3:
-
                     break;
                 default:
                     System.out.println("No es una opcion valida");
@@ -96,6 +90,19 @@ public class UserSesion {
         }while(opcion != 3);
 
         return isSesionActive;
+    }
+
+    public static boolean AccountOpcion(boolean isSesionActive){
+    String[] options = {"Cuanto tengo","Retirar Dinero", "Ingresar Dinero", "Movimientos", "Volver"};
+    String option = (String) JOptionPane.showInputDialog(null,
+            "Tu cuenta",
+            "Opciones de cuenta",
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            options,
+            options[0]);
+        System.out.println(option);
+    return isSesionActive;
     }
 }
 

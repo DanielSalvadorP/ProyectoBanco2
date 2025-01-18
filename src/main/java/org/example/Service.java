@@ -28,21 +28,4 @@ public class Service {
     public static void accesAccount(){
         ImplementDao.AccessUser();
     }
-
-    /**
-     * Inicia el servicio de cambio de estrado del usuario
-     */
-    public static void updateAccount(){
-
-    }
-
-    /**
-     * Inicia el servicio de eliminación de cuenta
-     */
-    public static void deleteAccount(){
-
-    }
-
-
-
 }
