@@ -118,7 +118,7 @@ public class ImplementDao {
                                             "Acceso concedido",
                                             "Éxito",
                                             JOptionPane.INFORMATION_MESSAGE);
-                                    UserSesion.OpcionClient(isSesionActive, email);
+                                    Service.OpcionClient(isSesionActive, email);
                                      } else {
                                     JOptionPane.showMessageDialog(null,
                                             "Contraseña incorrecta",
@@ -262,6 +262,33 @@ public class ImplementDao {
                     JOptionPane.ERROR_MESSAGE);
         }
         System.out.println(isSesionActive);
+        return isSesionActive;
+    }
+
+    public static boolean DeleteAccount(boolean isSesionActive, String email) throws SQLException {
+        //String stateDelete = "Delete from estado where correo = ?;";
+        String userDelete = "Delete from user where correo = ?;";
+        try (Connection connection = bdConecction.getConnection()){
+            try(PreparedStatement ps = connection.prepareStatement(userDelete)){
+                ps.setString(1,email);
+
+                int rowAfected = ps.executeUpdate();
+
+                if (rowAfected > 0) {
+                    System.out.println("La operación fue exitosa.");
+                    isSesionActive = Validation.endSesion(isSesionActive);
+                } else {
+                    System.out.println("No se encontró ninguna cuenta con el correo especificado.");
+                }
+            }
+
+        }catch (SQLException e){
+            System.out.println("Error de BD:" + e);
+            JOptionPane.showMessageDialog(null,
+                    "Error en la conección a BD",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
         return isSesionActive;
     }
 }
