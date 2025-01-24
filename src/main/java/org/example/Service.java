@@ -141,18 +141,18 @@ public class Service {
     public static boolean editDataOpcion(boolean isSesionActive, String email){
         String[] options = {"Nombre","Apellido", "Correo",
                 "Clave", "Volver"};
-        int option = JOptionPane.showOptionDialog(null,
-                "Tu cuenta",
-                "Opciones de cuenta",
-                JOptionPane.INFORMATION_MESSAGE,
-                JOptionPane.YES_NO_OPTION,
-                null,
-                options,
-                options[0]);
-        System.out.println(option);
+        boolean isRunning = true;
 
-        int countvalid=0;
         do {
+            int option = JOptionPane.showOptionDialog(null,
+                    "Tu cuenta",
+                    "Opciones de cuenta",
+                    JOptionPane.INFORMATION_MESSAGE,
+                    JOptionPane.YES_NO_OPTION,
+                    null,
+                    options,
+                    options[0]);
+
             switch (option){
                 case 1:
 
@@ -161,19 +161,17 @@ public class Service {
 
                     break;
                 case 3:
-                    System.out.println("counservice");
                     ImplementDao.UpdatePass(isSesionActive, email);
-                    option = 5;
                     break;
                 case 4:
 
                     break;
                 default:
                     System.out.println("Opción de Default");
-                    option = 5;
+                    isRunning = false;
                     break;
             }
-        }while (option != 5);
+        }while (!isRunning);
 
 
         return isSesionActive;
