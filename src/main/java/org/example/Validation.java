@@ -79,8 +79,12 @@ public class Validation {
     public static String passIsValid() {
         String pass = "";
         String confirmPass;
+
+        int countvalid=0;
         boolean isValid = false;
         while (!isValid) {
+
+            System.out.println("countvalid");
             pass = inputAndValidate("Ingresa una clave para tu cuenta",
                     "Clave");
             confirmPass = inputAndValidate("Confirma la clave para tu cuenta",
@@ -90,6 +94,7 @@ public class Validation {
                 if (isPasswordValid(pass) == true) {
                     isValid = true;
                     System.out.println("Clave valida");
+                    break;
                 } else {
                     JOptionPane.showMessageDialog(
                             null,

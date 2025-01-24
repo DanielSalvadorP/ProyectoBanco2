@@ -171,10 +171,10 @@ public class ImplementDao {
      * siempre y cuando cumpla con los estandares de seguridad
      * @param email
      */
-    public static void UpdatePass(String email){
+    public static boolean UpdatePass(boolean isSesionActive,String email){
         //Se trae la contraseña nueva desde el metodo de validación de clave
         String passNew = Validation.passIsValid();
-
+        int countdao=0;
             //Conección a la BD
         try (Connection connection = bdConecction.getConnection()) {
             //Validar que existe el email
@@ -196,11 +196,15 @@ public class ImplementDao {
                                         "Cambio realizado",
                                         "Exito",
                                         JOptionPane.INFORMATION_MESSAGE);
+
+                                System.out.println("countdao");
+                                isSesionActive = true;
                             } else {
                                 JOptionPane.showMessageDialog(null,
                                         "No se pudo acctualizar",
                                         "Error",
                                         JOptionPane.ERROR_MESSAGE);
+                                isSesionActive = false;
                             }
                         }
                     } else {
@@ -214,6 +218,7 @@ public class ImplementDao {
         } catch (SQLException e) {
             System.out.println("Error de base de datos: " + e);
         }
+        return isSesionActive;
     }
 
     /**

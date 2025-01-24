@@ -2,6 +2,7 @@ package org.example;
 
 import javax.swing.*;
 import java.sql.SQLException;
+import java.sql.SQLOutput;
 
 public class Service {
 
@@ -76,21 +77,22 @@ public class Service {
      * @return
      */
     public static boolean OpcionAccountUser(boolean isSesionActive, String email){
-        String[] opciones = {"Cambiar clave", "Desactivar cuenta","Eliminar cuenta","Cerrar Sesión","Regresar"};
+        String[] opciones = {"Editar Datos", "Desactivar cuenta","Eliminar cuenta","Cerrar Sesión","Regresar"};
         int opcion = -1;
 
         do{
             opcion = JOptionPane.showOptionDialog(null,
                     "¿Qué quieres hoy?",
                     "Opciones",
-                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
                     null,
                     opciones,
                     opciones[0]);
 
             switch (opcion){
                 case 0:
-                    ImplementDao.UpdatePass(email);
+                    editDataOpcion(isSesionActive, email);
                     break;
                 case 1:
                     if (Validation.Confirm()){
@@ -123,7 +125,8 @@ public class Service {
     }
 
     public static boolean AccountOpcion(boolean isSesionActive){
-        String[] options = {"Cuanto tengo","Retirar Dinero", "Ingresar Dinero", "Movimientos", "Volver"};
+        String[] options = {"Cuanto tengo","Retirar Dinero",
+                "Ingresar Dinero", "Movimientos", "Volver"};
         String option = (String) JOptionPane.showInputDialog(null,
                 "Tu cuenta",
                 "Opciones de cuenta",
@@ -134,4 +137,47 @@ public class Service {
         System.out.println(option);
         return isSesionActive;
     }
+
+    public static boolean editDataOpcion(boolean isSesionActive, String email){
+        String[] options = {"Nombre","Apellido", "Correo",
+                "Clave", "Volver"};
+        int option = JOptionPane.showOptionDialog(null,
+                "Tu cuenta",
+                "Opciones de cuenta",
+                JOptionPane.INFORMATION_MESSAGE,
+                JOptionPane.YES_NO_OPTION,
+                null,
+                options,
+                options[0]);
+        System.out.println(option);
+
+        int countvalid=0;
+        do {
+            switch (option){
+                case 1:
+
+                    break;
+                case 2:
+
+                    break;
+                case 3:
+                    System.out.println("counservice");
+                    ImplementDao.UpdatePass(isSesionActive, email);
+                    option = 5;
+                    break;
+                case 4:
+
+                    break;
+                default:
+                    System.out.println("Opción de Default");
+                    option = 5;
+                    break;
+            }
+        }while (option != 5);
+
+
+        return isSesionActive;
+    }
+
+
 }

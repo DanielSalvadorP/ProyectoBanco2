@@ -5,11 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4d926d00-849a-4f22-8333-806b9bc0bd73" name="Changes" comment="Mejorado el meth creacion de user">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/ImplementDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/ImplementDao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Service.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Service.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/UserSesion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/UserSesion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Validation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Validation.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -253,7 +252,23 @@
       <option name="project" value="LOCAL" />
       <updated>1736916599949</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Mejorado el meth creacion de user">
+      <option name="closed" value="true" />
+      <created>1737349012658</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1737349012658</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Mejorado el meth creacion de user">
+      <option name="closed" value="true" />
+      <created>1737349042975</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1737349042975</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
